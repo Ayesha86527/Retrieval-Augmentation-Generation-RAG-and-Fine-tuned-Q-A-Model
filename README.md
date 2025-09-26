@@ -80,7 +80,6 @@ Interactive Docs: http://127.0.0.1:8000/docs
 Processes a document → chunks → embeddings → indexes into FAISS.
 
 Method: POST
-
 Endpoint: /upload/
 
 Description: Upload a PDF or TXT file for indexing.
@@ -91,12 +90,11 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -F 'file=@path/to/your/document.pdf;type=application/pdf'
 
-Question Answering
+2. Question Answering
 
 Executes the full RAG pipeline: retrieval + context construction + generation.
 
 Method: POST
-
 Endpoint: /QA/
 
 Request Body (JSON):
