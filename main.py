@@ -40,7 +40,6 @@ async def upload_document(file: UploadFile = File(...)):
     os.remove(file_path)  # Clean-up file space
     text_splitter = split_text()
     chunks = create_chunks(docs, text_splitter)
-    chunks = add_metadata(chunks)
     records, embeddings = create_embeddings(chunks)
 
     if app.state.faiss_index is None:
@@ -72,3 +71,4 @@ def ask_endpoint(request: QueryRequest):
         logger.error(f"Error processing query: {str(e)}")
 
         raise HTTPException(status_code=500, detail=str(e))
+
