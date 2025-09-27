@@ -69,16 +69,6 @@ def create_chunks(docs, text_splitter):
             all_chunks.append(chunk)
     return all_chunks
 
-# Adding required metadata to the chunks
-def add_metadata(chunks):
-    enriched = []
-    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    for i, chunk in enumerate(chunks, start=1):
-        chunk.metadata["chunk_id"] = i
-        chunk.metadata["timestamp"] = timestamp
-        enriched.append(chunk)
-    return enriched
-
 # Creating Embeddings from the processed chunks along with the metadata
 def create_embeddings(chunks):
     text_contents = [doc.page_content for doc in chunks]
@@ -145,4 +135,5 @@ def chat_completion(chat_model,user_input,context):
     ai_msg = chat_model.invoke(messages)
 
     return ai_msg.content.split("[/INST]")[-1].strip()
+
 
