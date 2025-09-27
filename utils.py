@@ -10,6 +10,12 @@ from langchain_core.messages import (
     SystemMessage,
 )
 import torch
+import getpass
+import os
+
+# Configure env variables
+if not os.getenv("HUGGINGFACEHUB_API_TOKEN"):
+    os.environ["HUGGINGFACEHUB_API_TOKEN"] = getpass.getpass("Enter your token: ")
 
 
 embedding_model=SentenceTransformer('paraphrase-MiniLM-L6-v2')
@@ -137,4 +143,5 @@ def chat_completion(chat_model,user_input,context):
     ),
     ]
     ai_msg = chat_model.invoke(messages)
+
     return ai_msg.content.split("[/INST]")[-1].strip()
