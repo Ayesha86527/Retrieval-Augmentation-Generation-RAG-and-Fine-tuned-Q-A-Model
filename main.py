@@ -37,6 +37,7 @@ async def upload_document(file: UploadFile = File(...)):
         f.write(await file.read())
 
     docs = document_loader(file_path)
+    os.remove(file_path)  # Clean-up file space
     text_splitter = split_text()
     chunks = create_chunks(docs, text_splitter)
     chunks = add_metadata(chunks)
@@ -56,6 +57,8 @@ async def upload_document(file: UploadFile = File(...)):
 def ask_endpoint(request: QueryRequest):
     if not request.query.strip():
         raise HTTPException(status_code=400, detail="Query cannot be empty")
+    if app.state.faiss_index is None:
+      raise HTTPException(status_code=400, detail="No documents uploaded yet")
     try:
         logger.info(f"Processing query of length: {len(request.query)}")
 
@@ -67,4 +70,5 @@ def ask_endpoint(request: QueryRequest):
         return QueryResponse(response = ai_response)
     except Exception as e:
         logger.error(f"Error processing query: {str(e)}")
+
         raise HTTPException(status_code=500, detail=str(e))
